@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'crm_main:home'
+LOGOUT_REDIRECT_URL = 'crm_main:home'
 
 # Application definition
 
@@ -38,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crm_main',
-    'account'
+    'account',
+    'dashboard'
 ]
 
 MIDDLEWARE = [
