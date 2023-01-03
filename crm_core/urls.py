@@ -12,5 +12,7 @@ urlpatterns = [
 
     path('lead-edit/<int:pk>/', edit_lead, name='edit'),
 
+    path('<int:pk>/convert', convert_to_client, name='convert'),
+
     path('<int:pk>/', lead_delete, name='delete')
 ]

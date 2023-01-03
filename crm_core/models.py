@@ -29,6 +29,7 @@ class Lead(models.Model):
     description = models.TextField()
     priority = models.CharField(max_length=50, choices=CHOICES_PRIORITY, default=MEDIUM)
     status = models.CharField(max_length=50, choices=CHOICES_STATUS, default=NEW)
+    converted_to_client = models.BooleanField(default=False, verbose_name="Mijozga aylantirildi")
     created_by = models.ForeignKey(User, related_name='leads', on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shilgan vaqti")
     modified_at = models.DateTimeField(auto_now=True, verbose_name="Tahrirlangan vaqti")

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import AddLeadForm
 from .models import Lead
+from client.models import Client
 
 
 @login_required
@@ -68,3 +69,19 @@ def add_lead(request):
     else:
         form = AddLeadForm()
     return render(request, 'crm_core/add-lead.html', {'form': form})
+
+
+@login_required
+def convert_to_client(request, pk):
+    """Yetakchi Foydalanuvchini Mijozga aylantirish funksiyasi"""
+
+    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    client = Client.objects.create(
+        name=lead.name, email=lead.email,
+        created_by=request.user,
+        description=lead.description
+    )
+    lead.converted_to_client = True
+    lead.save()
+    messages.success(request, "Foydalanuvchi Mijozga aylantirildi")
+    return redirect('crm_core:leads')

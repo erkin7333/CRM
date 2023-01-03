@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'crm_main',
     'account',
     'dashboard',
-    'crm_core'
+    'crm_core',
+    'client'
 ]
 
 MIDDLEWARE = [
