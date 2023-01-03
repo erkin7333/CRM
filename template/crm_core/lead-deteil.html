@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Lead Detail{% endblock %}
+
+
+{% block content %}
+
+<div class="py-6 px-6">
+    <p class="font-semibold">Nomi</p>
+    <h6 class="mb-4 text-xl">{{ lead_d.name }}</h6>
+
+    {% if lead_d.description %}
+    <p class="mb-2 font-semibold">Tavsifi</p>
+    <p class="mb-2">{{ lead_d.description }}</p>
+    {% endif %}
+
+    <p class="mb-2 font-semibold">Ustuvorlik</p>
+    <p class="mb-2">{{ lead_d.get_priority_display }}</p>
+
+    <p class="mb-2 font-semibold">Holati</p>
+    <p class="mb-2">{{ lead_d.get_status_display }}</p>
+
+    <p class="mb-2 font-semibold">Yaratilgan vaqti</p>
+    <p class="mb-2">{{ lead_d.created_at }}</p>
+
+    <p class="mb-2 font-semibold">Uzgartirilgan vaqti</p>
+    <p class="mb-2">{{ lead_d.modified_at }}</p>
+
+    <hr class="my-3">
+    <a href="{% url 'crm_core:edit' lead_d.pk %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
+    <a href="{% url 'crm_core:delete' lead_d.pk %}" class="py-2 px-4 rounded-xl bg-red-500 text-white">O'chirish </a>
+    <hr class="my-3">
+    <a class="mb-2" href="{% url 'crm_core:leads' %}">Orqaga</a>
+    <hr class="my-3">
+</div>
+
+{% endblock %}

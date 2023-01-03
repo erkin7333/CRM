@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Leads{% endblock %}
+
+
+{% block content %}
+
+<div class="py-6 px-6">
+    <h6 class="mb-4 text-xl">Leads</h6>
+    <a href="{% url 'crm_core:add_lead' %}" class="inline-block text-white py-4 px-6 bg-teal-600 rounded-xl">Add Lead</a>
+
+    <div class="mt-6 flex justify-between">
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Nomi</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Ustuvorlik</p>
+        <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Holati</p>
+    </div>
+
+    {% for lead in leads %}
+    <div class="mt-2 flex justify-between">
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">
+            <a href="{% url 'crm_core:lead_detail' lead.pk %}">{{ lead.name }}</a>
+        </p>
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{ lead.get_priority_display }}</p>
+        <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{ lead.get_status_display }}</p>
+    </div>
+    {% empty %}
+    <p class="px-2">Maʼlumotlar bazasida hali hech qanday yetakchi yoʻq...</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
