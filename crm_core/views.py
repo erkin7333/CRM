@@ -10,7 +10,7 @@ from client.models import Client
 def lead_list(request):
     """Foydalanuvchilarni bazadan malumotlarin olish funksiyasi"""
 
-    leads = Lead.objects.filter(created_by=request.user)
+    leads = Lead.objects.filter(created_by=request.user, converted_to_client=False)
     context = {
         'leads': leads
     }

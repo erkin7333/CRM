@@ -9,6 +9,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('crm_core/', include('crm_core.urls')),
+    path('client/', include('client.urls'))
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
