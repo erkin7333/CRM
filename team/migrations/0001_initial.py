@@ -15,13 +15,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Userprofile',
+            name='Team',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='userprofile', to=settings.AUTH_USER_MODEL)),
+                ('name', models.CharField(max_length=100)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='crated_teams', to=settings.AUTH_USER_MODEL)),
+                ('members', models.ManyToManyField(related_name='teams', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'verbose_name': 'Userprofile',
+                'verbose_name': 'Team',
             },
         ),
     ]

@@ -3,6 +3,7 @@ from .models import Client
 from django.contrib.auth.decorators import login_required
 from .forms import ClientForm
 from django.contrib import messages
+from team.models import Team
 
 
 
@@ -35,8 +36,10 @@ def client_add(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
+            team = Team.objects.filter(created_by=request.user)[0]
             client = form.save(commit=False)
             client.created_by = request.user
+            client.team = team
             client.save()
             messages.success(request, "Client qo'shildi")
             return redirect('client:client')

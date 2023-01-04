@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from team.models import Team
 
 
 class Lead(models.Model):
@@ -24,6 +24,7 @@ class Lead(models.Model):
         (LOST, "YO'QOTILGAN")
     )
 
+    team = models.ForeignKey(Team, related_name='leads', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     email = models.EmailField()
     description = models.TextField()
@@ -38,3 +39,4 @@ class Lead(models.Model):
 
     class Meta:
         verbose_name = 'Lead'
+        ordering = ('name',)

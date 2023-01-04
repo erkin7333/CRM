@@ -4,7 +4,7 @@ from .models import Client
 
 
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email', 'description',
+    list_display = ('id', 'name', 'email', 'description', 'team',
                     'created_by', 'created_at', 'modified_at')
     list_display_links = ('id', 'name', 'email')
     search_fields = ('name', 'email', 'description')
