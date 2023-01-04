@@ -33,6 +33,7 @@ def client_detail(request, pk):
 def client_add(request):
     """Client qo'shish uchun funksiy"""
 
+    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
@@ -46,7 +47,8 @@ def client_add(request):
     else:
         form = ClientForm()
         context = {
-            'form': form
+            'form': form,
+            'team': team
         }
     return render(request, 'client/client-add.html', context=context)
 

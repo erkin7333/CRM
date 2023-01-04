@@ -6,11 +6,18 @@
 
 <div class="py-6 px-6">
     <h6 class="text-xl">Add lead</h6>
+
+    {% if team.plan.max_leads > team.leads.all|length %}
     <form action="#" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">Saqlash</button>
     </form>
+    {% else %}
+    <div class="mt-5 px-8 bg-red-400 rounded-xl text-white">
+        <p>Jamoangiz yetakchilar sonining maksimal soniga yetdi. Egangiz rejangizni yangilashi kerak!</p>
+    </div>
+    {% endif %}
 </div>
 
 {% endblock %}

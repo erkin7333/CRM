@@ -59,6 +59,7 @@ def edit_lead(request, pk):
 def add_lead(request):
     """Foydalanuvchi qo'shish uchun funksiya"""
 
+    team = Team.objects.filter(created_by=request.user)[0]
     if request.method == 'POST':
         form = AddLeadForm(request.POST)
         if form.is_valid():
@@ -71,7 +72,7 @@ def add_lead(request):
             return redirect('crm_core:leads')
     else:
         form = AddLeadForm()
-    return render(request, 'crm_core/add-lead.html', {'form': form})
+    return render(request, 'crm_core/add-lead.html', {'form': form, 'team': team})
 
 
 @login_required
