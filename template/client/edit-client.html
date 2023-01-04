@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Edit Client{% endblock %}
+
+
+{% block content %}
+
+<div class="py-6 px-6">
+    <h6 class="text-xl">Edit Client</h6>
+    <form action="#" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">Saqlash</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -49,6 +49,23 @@ def client_add(request):
 
 
 @login_required
+def edit_client(request, pk):
+    """Client malumotlarini yangilash uchun funksiya"""
+
+    client = get_object_or_404(Client, created_by=request.user, id=pk)
+    if request.method == 'POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Client malumotlari o'zgartirildi!")
+            return redirect('client:client')
+    else:
+        form = ClientForm(instance=client)
+        context = {'form': form}
+    return render(request, 'client/edit-client.html', context=context)
+
+
+@login_required
 def client_delete(request, pk):
     """Clientni o'chirish funksiyasi..."""
 
