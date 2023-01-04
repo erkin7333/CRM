@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Client
 from django.contrib.auth.decorators import login_required
 from .forms import ClientForm
-
+from django.contrib import messages
 
 
 
@@ -32,4 +32,27 @@ def client_detail(request, pk):
 def client_add(request):
     """Client qo'shish uchun funksiy"""
 
-    pass
+    if request.method == 'POST':
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            client = form.save(commit=False)
+            client.created_by = request.user
+            client.save()
+            messages.success(request, "Client qo'shildi")
+            return redirect('client:client')
+    else:
+        form = ClientForm()
+        context = {
+            'form': form
+        }
+    return render(request, 'client/client-add.html', context=context)
+
+
+@login_required
+def client_delete(request, pk):
+    """Clientni o'chirish funksiyasi..."""
+
+    client = get_object_or_404(Client, created_by=request.user, id=pk)
+    client.delete()
+    messages.success(request, "Client o'chirildi")
+    return redirect('client:client')
