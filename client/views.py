@@ -4,8 +4,13 @@ from django.contrib.auth.decorators import login_required
 from .forms import ClientForm
 from django.contrib import messages
 from team.models import Team
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+
+class ClientListView(LoginRequiredMixin, ListView):
+    model = Client
 
 @login_required
 def client_list(request):

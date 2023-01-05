@@ -14,7 +14,7 @@
     {% endif %}
 
     <p class="mb-2 font-semibold">Ustuvorlik</p>
-    <p class="mb-2">{{ lead_d.get_priority_display }}</p>
+    <p class="mb-2">{{ queryset.get_priority_display }}</p>
 
     <p class="mb-2 font-semibold">Holati</p>
     <p class="mb-2">{{ lead_d.get_status_display }}</p>

@@ -14,7 +14,7 @@
         <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Holati</p>
     </div>
 
-    {% for lead in leads %}
+    {% for lead in object_list %}
     <div class="mt-2 flex justify-between">
         <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">
             <a href="{% url 'crm_core:lead_detail' lead.pk %}">{{ lead.name }}</a>

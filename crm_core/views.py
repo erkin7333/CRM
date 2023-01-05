@@ -5,6 +5,20 @@ from .forms import AddLeadForm
 from .models import Lead
 from client.models import Client
 from team.models import Team
+from django.views.generic import ListView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
+
+class LeadListView(LoginRequiredMixin, ListView):
+    """Foydalanuvchilarni bazadan malumotlarin olish Class based views"""
+    model = Lead
+    template_name = 'crm_core/lead-list.html'
+
+    def get_queryset(self):
+        queryset = super(LeadListView, self).get_queryset()
+        queryset = queryset.filter(created_by=self.request.user, converted_to_client=False)
+        return queryset
 
 
 @login_required
@@ -26,7 +40,7 @@ def lead_deteil(request, pk):
     context = {
         'lead_d': lead_d
     }
-    return render(request, 'crm_core/lead-deteil.html', context=context)
+    return render(request, 'crm_core/lead_detail.html', context=context)
 
 
 @login_required
@@ -55,6 +69,16 @@ def edit_lead(request, pk):
         context = {'form': form}
     return render(request, 'crm_core/lead-edit.html', context=context)
 
+
+class LeadUpdateView(LoginRequiredMixin, UpdateView):
+    """Foydalanuvchini yangilash uchun Class based views"""
+    model = Lead
+    template_name = 'crm_core/lead-edit.html'
+    fields = ('name', 'email', 'description', 'priority', 'status')
+    success_url = reverse_lazy('crm_core:leads')
+
+
+
 @login_required
 def add_lead(request):
     """Foydalanuvchi qo'shish uchun funksiya"""
@@ -79,7 +103,7 @@ def add_lead(request):
 def convert_to_client(request, pk):
     """Yetakchi Foydalanuvchini Mijozga aylantirish funksiyasi"""
 
-    lead = get_object_or_404(Lead, created_by=request.user, id=pk)
+    lead = get_object_or_404(Lead, created_by=request.user, id=pk)[0]
     team = Team.objects.filter(created_by=request.user)[0]
     client = Client.objects.create(
         name=lead.name, email=lead.email,

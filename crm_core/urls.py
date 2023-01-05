@@ -6,11 +6,11 @@ app_name = 'crm_core'
 urlpatterns = [
     path('add-lead/', add_lead, name='add_lead'),
 
-    path('leads/', lead_list, name='leads'),
+    path('leads/', LeadListView.as_view(), name='leads'),
 
     path('lead-detail/<int:pk>/', lead_deteil, name='lead_detail'),
 
-    path('lead-edit/<int:pk>/', edit_lead, name='edit'),
+    path('lead-edit/<int:pk>/', LeadUpdateView.as_view(), name='edit'),
 
     path('<int:pk>/convert', convert_to_client, name='convert'),
 
