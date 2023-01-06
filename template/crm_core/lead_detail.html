@@ -6,31 +6,49 @@
 
 <div class="py-6 px-6">
     <p class="font-semibold">Nomi</p>
-    <h6 class="mb-4 text-xl">{{ lead_d.name }}</h6>
+    <h6 class="mb-4 text-xl">{{ lead.name }}</h6>
 
     {% if lead_d.description %}
     <p class="mb-2 font-semibold">Tavsifi</p>
-    <p class="mb-2">{{ lead_d.description }}</p>
+    <p class="mb-2">{{ lead.description }}</p>
     {% endif %}
 
     <p class="mb-2 font-semibold">Ustuvorlik</p>
-    <p class="mb-2">{{ queryset.get_priority_display }}</p>
+    <p class="mb-2">{{ lead.get_priority_display }}</p>
 
     <p class="mb-2 font-semibold">Holati</p>
-    <p class="mb-2">{{ lead_d.get_status_display }}</p>
+    <p class="mb-2">{{ lead.get_status_display }}</p>
 
     <p class="mb-2 font-semibold">Yaratilgan vaqti</p>
-    <p class="mb-2">{{ lead_d.created_at }}</p>
+    <p class="mb-2">{{ lead.created_at }}</p>
 
     <p class="mb-2 font-semibold">Uzgartirilgan vaqti</p>
-    <p class="mb-2">{{ lead_d.modified_at }}</p>
+    <p class="mb-2">{{ lead.modified_at }}</p>
 
     <hr class="my-3">
-    <a href="{% url 'crm_core:convert' lead_d.pk %}" class="py-2 px-4 rounded-xl bg-blue-500 text-white">Mijozga aylantirildi</a>
-    <a href="{% url 'crm_core:edit' lead_d.pk %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
-    <a href="{% url 'crm_core:delete' lead_d.pk %}" class="py-2 px-4 rounded-xl bg-red-500 text-white">O'chirish </a>
+    <a class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white" href="{% url 'crm_core:leads' %}">Orqaga</a>
+    <a href="{% url 'crm_core:convert' lead.pk %}" class="py-2 px-4 rounded-xl bg-blue-500 text-white">Mijozga aylantirildi</a>
+    <a href="{% url 'crm_core:edit' lead.pk %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
+    <a href="{% url 'crm_core:delete' lead.pk %}" class="py-2 px-4 rounded-xl bg-red-500 text-white">O'chirish </a>
     <hr class="my-3">
-    <a class="mb-2" href="{% url 'crm_core:leads' %}">Orqaga</a>
+
+    <h2 class="text-xl">Comments</h2>
+
+    <div class="space-y-4">
+        {% for comment in lead.comments.all %}
+        <div class="bg-gray-100 py-6 px-6 rounded-xl">
+            <p><strong>{{ comment.created_by }}</strong> @{{ comment.created_at }}</p>
+            {{ comment.content }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'crm_core:add_comment' lead.pk %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
+    </form>
+
     <hr class="my-3">
 </div>
 

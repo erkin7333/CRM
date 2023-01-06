@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client
+from .models import Client, Comment
 
 
 
@@ -11,3 +11,11 @@ class ClientAdmin(admin.ModelAdmin):
     class Meta:
         model = Client
 admin.site.register(Client, ClientAdmin)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'team', 'client', 'content', 'created_by', 'created_at')
+    list_display_links = ('id', 'team', 'client')
+    class Meta:
+        model = Comment
+admin.site.register(Comment, CommentAdmin)

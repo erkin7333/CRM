@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import AddLeadForm
+from .forms import AddLeadForm, AddCommentForm
 from .models import Lead
-from client.models import Client
+from client.models import Client, Comment as ClientComment
 from team.models import Team
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 
 
 class LeadListView(LoginRequiredMixin, ListView):
@@ -41,6 +42,20 @@ def lead_deteil(request, pk):
         'lead_d': lead_d
     }
     return render(request, 'crm_core/lead_detail.html', context=context)
+
+
+class LeadDetailView(LoginRequiredMixin, DetailView):
+    """Foydalanuvchini batafsil malumotlarini ko'rish uchun Class based views"""
+    model = Lead
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = AddCommentForm
+        return context
+    def get_queryset(self):
+        queryset = super(LeadDetailView, self).get_queryset()
+        return queryset.filter(created_by=self.request.user, id=self.kwargs.get('pk'))
+
 
 
 @login_required
@@ -99,6 +114,23 @@ def add_lead(request):
     return render(request, 'crm_core/add-lead.html', {'form': form, 'team': team})
 
 
+class LeadCreateView(LoginRequiredMixin, CreateView):
+    """Foydalanuvchi qo'shish uchun Class based views"""
+    model = Lead
+    template_name = 'crm_core/add-lead.html'
+    fields = ('name', 'email', 'description', 'priority', 'status')
+    success_url = reverse_lazy('crm_core:leads')
+
+    def form_valid(self, form):
+        team = Team.objects.filter(created_by=self.request.user)[0]
+        self.object = form.save(commit=False)
+        self.object.created_by = self.request.user
+        self.object.team = team
+        self.object.save()
+        return
+
+
+
 @login_required
 def convert_to_client(request, pk):
     """Yetakchi Foydalanuvchini Mijozga aylantirish funksiyasi"""
@@ -113,5 +145,34 @@ def convert_to_client(request, pk):
     )
     lead.converted_to_client = True
     lead.save()
+
+    comments = lead.comments.all()
+    for comment in comments:
+        ClientComment.objects.create(
+            client=client,
+            content=comment.content,
+            created_by=comment.created_by
+        )
+
     messages.success(request, "Foydalanuvchi Mijozga aylantirildi")
     return redirect('crm_core:leads')
+
+
+class AddCommentView(View):
+    """Cometariya qoldirish uchun Class based views"""
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        content = request.POST.get('content')
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            team = Team.objects.filter(created_by=self.request.user)[0]
+            comment = form.save(commit=False)
+            comment.team = team
+            comment.created_by = request.user
+            comment.lead_id = pk
+            comment.save()
+        print("AAAAAAAAAAAA=========", content)
+        print("WWWWWWWWWWw======", pk)
+
+        return redirect('crm_core:lead_detail', pk=pk)

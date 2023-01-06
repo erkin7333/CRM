@@ -26,6 +26,24 @@
     <hr class="my-3">
     <a class="mb-2" href="{% url 'client:client' %}">Orqaga</a>
     <hr class="my-3">
+    <h2 class="text-xl">Comments</h2>
+
+    <div class="space-y-4">
+        {% for comment in client.comments.all %}
+        <div class="bg-gray-100 py-6 px-6 rounded-xl">
+            <p><strong>{{ comment.created_by }}</strong> @{{ comment.created_at }}</p>
+            {{ comment.content }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <form action="{% url 'client:add_comment' client.pk %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
+    </form>
+
+    <hr class="my-3">
 </div>
 
 {% endblock %}

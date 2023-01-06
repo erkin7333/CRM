@@ -8,11 +8,13 @@ urlpatterns = [
 
     path('leads/', LeadListView.as_view(), name='leads'),
 
-    path('lead-detail/<int:pk>/', lead_deteil, name='lead_detail'),
+    path('lead-detail/<int:pk>/', LeadDetailView.as_view(), name='lead_detail'),
 
     path('lead-edit/<int:pk>/', LeadUpdateView.as_view(), name='edit'),
 
     path('<int:pk>/convert', convert_to_client, name='convert'),
 
-    path('<int:pk>/', lead_delete, name='delete')
+    path('<int:pk>/', lead_delete, name='delete'),
+
+    path('<int:pk>/add-comment/', AddCommentView.as_view(), name='add_comment')
 ]
