@@ -48,8 +48,25 @@
         {{ form.as_p }}
         <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
     </form>
+     <hr class="my-3">
 
+    <div class="space-y-4">
+        {% for file in lead.files.all %}
+        <div class="bg-gray-100 py-6 px-6 rounded-xl">
+            <p><strong>{{ file.created_by }}</strong> @{{ file.created_at }}</p>
+            <a href="{{ file.files.url }}">Yuklash</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="text-xl">Files</h2>
+     <form action="{% url 'crm_core:add_file' lead.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ file_forms.as_p }}
+        <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
+    </form>
     <hr class="my-3">
+
 </div>
 
 {% endblock %}

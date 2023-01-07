@@ -21,7 +21,8 @@
     <p class="mb-2">{{ client.modified_at }}</p>
 
     <hr class="my-3">
-    <a href="{% url 'client:edit_client' client.pk %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
+    <a href="{% url 'client:edit_client' client.pk %}"
+       class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
     <a href="{% url 'client:delete' client.pk %}" class="py-2 px-4 rounded-xl bg-red-500 text-white">O'chirish </a>
     <hr class="my-3">
     <a class="mb-2" href="{% url 'client:client' %}">Orqaga</a>
@@ -42,6 +43,22 @@
         {{ form.as_p }}
         <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
     </form>
+    <hr class="my-3">
+    <h2 class="text-xl">Files</h2>
+    <div class="space-y-4">
+        {% for file in client.files.all %}
+        <div class="bg-gray-100 py-6 px-6 rounded-xl">
+            <p><strong>{{ file.created_by }}</strong> @{{ file.created_at }}</p>
+            <a href="{{ file.files.url }}">Yuklash</a>
+        </div>
+        {% endfor %}
+    </div>
+    <form action="{% url 'client:add_file' client.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ file_form.as_p }}
+        <button type="submit" class="mb-2 py-2 px-4 rounded-xl bg-teal-500 text-white">Saqlash</button>
+    </form>
+    <hr class="my-3">
 
     <hr class="my-3">
 </div>

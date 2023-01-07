@@ -15,6 +15,6 @@ class AddCommentForm(forms.ModelForm):
 
 
 class AddFileForm(forms.ModelForm):
-    class Mera:
+    class Meta:
         model = LeadFile
         fields = ('files',)

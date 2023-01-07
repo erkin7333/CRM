@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Client
 from django.contrib.auth.decorators import login_required
-from .forms import ClientForm, AddCommentForm
+from .forms import ClientForm, AddCommentForm, AddFileForm
 from django.contrib import messages
 from team.models import Team
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import csv
+from django.http import HttpResponse
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -49,9 +50,37 @@ def client_detail(request, pk):
         form = AddCommentForm()
     context = {
         'client': client,
-        'form': form
+        'form': form,
+        'file_form': AddFileForm()
     }
     return render(request, 'client/client-detail.html', context=context)
+
+
+@login_required
+def client_add_file(request, pk):
+    """Fayil yuklash uchun fubksiya"""
+
+    team = Team.objects.filter(created_by=request.user)[0]
+    client = get_object_or_404(Client, created_by=request.user, id=pk)
+    if request.method == "POST":
+        form = AddFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.save(commit=False)
+            file.team = team
+            file.client_id = pk
+            file.created_by = request.user
+            file.save()
+            return redirect('client:client_detail', pk=pk)
+
+@login_required
+def client_export(request):
+    """Faylinii yuklab olish uchun funksiya"""
+
+    client = Client.objects.filter(created_by=request.user)
+    response = HttpResponse(
+        content_type='text.csv',
+        headers={}
+    )
 
 
 @login_required

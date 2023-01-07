@@ -16,5 +16,7 @@ urlpatterns = [
 
     path('<int:pk>/', lead_delete, name='delete'),
 
-    path('<int:pk>/add-comment/', AddCommentView.as_view(), name='add_comment')
+    path('<int:pk>/add-comment/', AddCommentView.as_view(), name='add_comment'),
+
+    path('<int:pk>/add-file/', AddFileView.as_view(), name='add_file')
 ]

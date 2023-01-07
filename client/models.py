@@ -32,3 +32,18 @@ class Comment(models.Model):
         return self.created_by.username
     class Meta:
         verbose_name = "Comment"
+
+
+
+class ClientFile(models.Model):
+    team = models.ForeignKey(Team, related_name="client_files", on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name='files', on_delete=models.CASCADE)
+    files = models.FileField(upload_to='clientfiles/')
+    created_by = models.ForeignKey(User, related_name='client_files', on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Qo'shilgan vaqti")
+
+    def __str__(self):
+        return self.created_by.username
+
+    class Meta:
+        verbose_name = "ClientFile"

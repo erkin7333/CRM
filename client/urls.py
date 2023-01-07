@@ -15,5 +15,7 @@ urlpatterns = [
 
     path('client/<int:pk>/', client_detail, name='client_detail'),
 
-    path('add-comment/<int:pk>/', client_detail, name='add_comment')
+    path('add-comment/<int:pk>/', client_detail, name='add_comment'),
+
+    path('<int:pk>/add-file/', client_add_file, name='add_file')
 ]

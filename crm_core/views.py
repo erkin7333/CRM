@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import AddLeadForm, AddCommentForm
+from .forms import AddLeadForm, AddCommentForm, AddFileForm
 from .models import Lead
 from client.models import Client, Comment as ClientComment
 from team.models import Team
@@ -51,6 +51,7 @@ class LeadDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = AddCommentForm
+        context['file_forms'] = AddFileForm()
         return context
     def get_queryset(self):
         queryset = super(LeadDetailView, self).get_queryset()
@@ -175,4 +176,20 @@ class AddCommentView(View):
         print("AAAAAAAAAAAA=========", content)
         print("WWWWWWWWWWw======", pk)
 
+        return redirect('crm_core:lead_detail', pk=pk)
+
+
+class AddFileView(View):
+    """Fayil yuklash uchun Class based views"""
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        form = AddFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            team = Team.objects.filter(created_by=self.request.user)[0]
+            file = form.save(commit=False)
+            file.team = team
+            file.lead_id = pk
+            file.created_by = request.user
+            file.save()
         return redirect('crm_core:lead_detail', pk=pk)
