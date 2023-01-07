@@ -17,5 +17,7 @@ urlpatterns = [
 
     path('add-comment/<int:pk>/', client_detail, name='add_comment'),
 
-    path('<int:pk>/add-file/', client_add_file, name='add_file')
+    path('<int:pk>/add-file/', client_add_file, name='add_file'),
+
+    path('export/', client_export, name='export')
 ]

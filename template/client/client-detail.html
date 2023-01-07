@@ -21,8 +21,8 @@
     <p class="mb-2">{{ client.modified_at }}</p>
 
     <hr class="my-3">
-    <a href="{% url 'client:edit_client' client.pk %}"
-       class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
+    <a href="{% url 'client:export' %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Yuklash</a>
+    <a href="{% url 'client:edit_client' client.pk %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Tahrirlash</a>
     <a href="{% url 'client:delete' client.pk %}" class="py-2 px-4 rounded-xl bg-red-500 text-white">O'chirish </a>
     <hr class="my-3">
     <a class="mb-2" href="{% url 'client:client' %}">Orqaga</a>
